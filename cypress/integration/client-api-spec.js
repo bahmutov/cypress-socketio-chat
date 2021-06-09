@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-it('chats', () => {
+it.skip('chats', () => {
   const name = `Cy_${Cypress._.random(1000)}`
   cy.visit('/', {
     onBeforeLoad(win) {
