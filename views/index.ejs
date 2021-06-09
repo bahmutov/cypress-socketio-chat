@@ -63,18 +63,17 @@
     <script>
       var socket = io.connect('http://localhost:8080')
 
-      // const clientActions = {
-      //   onChatMessage(msg) {
-      //     $('#messages').append($('<li>').html(msg))
-      //   },
-      //   isOnline(username) {
-      //     $('#messages').append($('<li>').html(username))
-      //   },
-      // }
-      // if (window.Cypress) {
-      //   window.socket = socket
-      //   window.clientActions = clientActions
-      // }
+      const clientActions = {
+        onChatMessage(msg) {
+          $('#messages').append($('<li>').html(msg))
+        },
+        isOnline(username) {
+          $('#messages').append($('<li>').html(username))
+        },
+      }
+      if (window.Cypress) {
+        window.clientActions = clientActions
+      }
 
       // submit text message without reload/refresh the page
       $('form').submit(function (e) {
@@ -84,19 +83,16 @@
         return false
       })
 
-      socket.on('chat_message', (msg) =>
-        $('#messages').append($('<li>').html(msg)),
-      )
+      // socket.on('chat_message', (msg) =>
+      //   $('#messages').append($('<li>').html(msg)),
+      // )
 
-      socket.on('is_online', (username) =>
-        $('#messages').append($('<li>').html(username)),
-      )
+      // socket.on('is_online', (username) =>
+      //   $('#messages').append($('<li>').html(username)),
+      // )
 
-      // append the chat text message
-      // socket.on('chat_message', clientActions.onChatMessage);
-
-      // append text if someone is online
-      // socket.on('is_online', clientActions.isOnline);
+      socket.on('chat_message', clientActions.onChatMessage)
+      socket.on('is_online', clientActions.isOnline)
 
       // ask username
       var username = prompt('Please tell me your name')
