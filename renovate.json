@@ -13,6 +13,7 @@
       "excludePackagePatterns": [
         "cypress",
         "socket.io",
+        "socket.io-client",
         "ejs"
       ],
       "enabled": false

@@ -8,6 +8,11 @@ it('chats', () => {
       cy.stub(win, 'prompt').returns('Cy')
     },
   })
+
+  // make sure the greeting message is shown
+  cy.contains('#messages li i', 'Cy join the chat..').should('be.visible')
+
+  // try posting a message
   cy.get('#txt').type('Hello there{enter}')
   cy.contains('#messages li', 'Hello there').contains('strong', 'Cy')
 })
