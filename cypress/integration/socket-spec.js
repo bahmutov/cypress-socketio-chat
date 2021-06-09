@@ -81,3 +81,28 @@ it('verifies messages received', () => {
     .should('include', name)
     .and('include', message)
 })
+
+it('shows the user leaving', () => {
+  // the browser is the 1st user
+  const name = `Cy_${Cypress._.random(1000)}`
+  cy.log(`User **${name}**`)
+  cy.visit('/', {
+    onBeforeLoad(win) {
+      cy.stub(win, 'prompt').returns(name)
+    },
+  })
+
+  // make sure the greeting message is shown
+  cy.contains('#messages li i', `${name} join the chat..`).should('be.visible')
+
+  const secondName = 'Ghost'
+  cy.task('connect', secondName)
+  cy.contains('#messages li i', `${secondName} join the chat..`).should(
+    'be.visible',
+  )
+  // the 2nd user is leaving
+  cy.task('disconnect')
+  cy.contains('#messages li i', `${secondName} left the chat..`).should(
+    'be.visible',
+  )
+})

@@ -29,6 +29,11 @@ module.exports = (on, config) => {
       return null
     },
 
+    disconnect() {
+      socket.disconnect()
+      return null
+    },
+
     say(message) {
       socket.emit('chat_message', message)
       return null
