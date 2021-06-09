@@ -17,7 +17,7 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "socket.io": "^2.2.0"
+    "socket.io": "4.1.2"
   },
   "devDependencies": {
     "cypress": "7.5.0",
