@@ -3,6 +3,8 @@
 it('chats', () => {
   cy.visit('/', {
     onBeforeLoad(win) {
+      // when the application asks for the name
+      // return "Cy" using https://on.cypress.io/stub
       cy.stub(win, 'prompt').returns('Cy')
     },
   })
