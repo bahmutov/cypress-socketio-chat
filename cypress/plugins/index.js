@@ -16,6 +16,7 @@ module.exports = (on, config) => {
 
   // connection to the chat server
   let socket
+  let lastMessage
 
   on('task', {
     connect(name) {
@@ -23,6 +24,7 @@ module.exports = (on, config) => {
       socket = io('http://localhost:8080')
 
       socket.emit('username', name)
+      socket.on('chat_message', (msg) => (lastMessage = msg))
 
       return null
     },
@@ -30,6 +32,11 @@ module.exports = (on, config) => {
     say(message) {
       socket.emit('chat_message', message)
       return null
+    },
+
+    getLastMessage() {
+      // cy.task cannot return undefined value
+      return lastMessage || null
     },
   })
 }
