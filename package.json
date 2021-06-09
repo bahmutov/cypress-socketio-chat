@@ -1,7 +1,7 @@
 {
   "name": "cypress-socketio-chat",
   "version": "1.0.0",
-  "description": "Example testing realtime Socket.io chat using Cypress.io",
+  "description": "Example testing real-time Socket.io chat using Cypress.io",
   "main": "index.js",
   "private": true,
   "scripts": {
