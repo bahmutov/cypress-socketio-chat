@@ -6,6 +6,8 @@ The original chat program copied from [dkhd/node-group-chat](https://github.com/
 
 ![Chat test](images/chat.png)
 
+Read the blog post [Test a Socket.io Chat App using Cypress](https://glebbahmutov.com/blog/test-socketio-chat-using-cypress/)
+
 [ci image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/ci/badge.svg?branch=main
 [ci url]: https://github.com/bahmutov/cypress-socketio-chat/actions
 [badges image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/badges/badge.svg?branch=main
