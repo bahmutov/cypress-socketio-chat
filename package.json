@@ -1,0 +1,22 @@
+{
+  "name": "cypress-socketio-chat",
+  "version": "1.0.0",
+  "description": "Example testing realtime Socket.io chat using Cypress.io",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "author": "Diky Hadna",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "cypress": "7.5.0"
+  }
+}
