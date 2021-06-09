@@ -6,8 +6,10 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
     "cy:open": "cypress open",
-    "cy:run": "cypress run"
+    "cy:run": "cypress run",
+    "dev": "start-test 8080 cy:open"
   },
   "author": "Diky Hadna",
   "license": "ISC",
@@ -17,6 +19,7 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "cypress": "7.5.0"
+    "cypress": "7.5.0",
+    "start-server-and-test": "1.12.5"
   }
 }
