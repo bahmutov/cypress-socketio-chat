@@ -12,7 +12,5 @@ it('chats with the first user', () => {
   // make sure the greeting message is shown
   cy.contains('#messages li i', `${name} join the chat..`).should('be.visible')
 
-  // try posting a message
-  // cy.get('#txt').type('Hello there{enter}')
-  // cy.contains('#messages li', 'Hello there').contains('strong', 'Cy')
+  cy.get('#txt').type('Good to see you{enter}')
 })
