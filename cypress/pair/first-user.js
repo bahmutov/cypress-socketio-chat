@@ -22,4 +22,8 @@ it('chats with the second user', () => {
 
   // second user posts a message
   cy.contains('#messages li', 'Good to see you').contains('strong', secondName)
+
+  // reply to the second user
+  cy.get('#txt').type('Glad to be here{enter}')
+  cy.contains('#messages li', 'Glad to be here').contains('strong', name)
 })

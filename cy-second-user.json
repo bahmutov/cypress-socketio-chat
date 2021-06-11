@@ -9,5 +9,6 @@
   "viewportHeight": 400,
   "defaultCommandTimeout": 15000,
   "videosFolder": "cypress/videos-pair/second",
+  "screenshotsFolder": "cypress/screenshots-pair/second",
   "$schema": "https://on.cypress.io/cypress.schema.json"
 }
