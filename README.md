@@ -17,6 +17,15 @@ Name | Description
 [client-api-spec.js](./cypress/integration/client-api-spec.js) | Invokes events as a 2nd user using app actions
 [socket-spec.js](./cypress/integration/socket-spec.js) | Connects to the Socket.io server as a 2nd user
 
+## Running 2 Cypress instances
+
+This repo also shows how to run 2 Cypress instances at the same time to "really" chat with each other.
+
+- start the server with `npm start`
+- execute `npm run chat` which starts the two Cypress processes
+
+Look at the [package.json](./package.json) file to see the commands we use to run the first and second user specs - they are listed in [cy-first-user.json](./cy-first-user.json) and [cy-second-user.json](./cy-second-user.json) config files.
+
 [ci image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/ci/badge.svg?branch=main
 [ci url]: https://github.com/bahmutov/cypress-socketio-chat/actions
 [badges image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/badges/badge.svg?branch=main
