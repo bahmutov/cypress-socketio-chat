@@ -23,6 +23,6 @@ jobs:
         with:
           # we already have installed everything
           install: false
-          start: npm start
-          wait-on: 'http://localhost:8080'
+          # the application is running already
+          # from the previous "start" command
           command: npm run chat
