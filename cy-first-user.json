@@ -1,0 +1,11 @@
+{
+  "fixturesFolder": false,
+  "supportFile": false,
+  "pluginsFile": false,
+  "baseUrl": "http://localhost:8080",
+  "integrationFolder": "cypress/pair",
+  "testFiles": "**/first-spec.js",
+  "viewportWidth": 400,
+  "viewportHeight": 400,
+  "$schema": "https://on.cypress.io/cypress.schema.json"
+}
