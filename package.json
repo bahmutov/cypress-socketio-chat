@@ -10,7 +10,10 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "dev": "start-test 8080 cy:open",
-    "pretty": "prettier --write 'cypress/**/*.js' index.js"
+    "pretty": "prettier --write 'cypress/**/*.js' index.js",
+    "cy:first": "cypress run --config-file cy-first-user.json",
+    "cy:second": "cypress run --config-file cy-second-user.json",
+    "chat": "concurrently npm:cy:first npm:cy:second"
   },
   "author": "Diky Hadna",
   "license": "ISC",
@@ -20,6 +23,7 @@
     "socket.io": "4.1.2"
   },
   "devDependencies": {
+    "concurrently": "6.2.0",
     "cypress": "7.5.0",
     "prettier": "2.3.1",
     "socket.io-client": "4.1.2",

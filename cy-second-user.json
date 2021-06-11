@@ -7,5 +7,7 @@
   "testFiles": "**/second-user.js",
   "viewportWidth": 400,
   "viewportHeight": 400,
+  "defaultCommandTimeout": 15000,
+  "videosFolder": "cypress/videos-pair/second",
   "$schema": "https://on.cypress.io/cypress.schema.json"
 }
