@@ -18,3 +18,11 @@ jobs:
 
       # run two Cypress instances at the same time
       # so they truly chat with each other
+      - name: Run tests 🧪
+        uses: cypress-io/github-action@v2
+        with:
+          # we already have installed everything
+          install: false
+          start: npm start
+          wait: 'http://localhost:8080'
+          command: npm run chat
