@@ -6,7 +6,7 @@ The original chat program copied from [dkhd/node-group-chat](https://github.com/
 
 ![Chat test](images/chat.png)
 
-Read the blog post [Test a Socket.io Chat App using Cypress](https://glebbahmutov.com/blog/test-socketio-chat-using-cypress/)
+Read the blog posts [Test a Socket.io Chat App using Cypress](https://glebbahmutov.com/blog/test-socketio-chat-using-cypress/) and [Run Two Cypress Test Runners At The Same Time](https://glebbahmutov.com/blog/run-two-cypress-runners/).
 
 ## Specs
 
