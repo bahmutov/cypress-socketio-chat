@@ -3,5 +3,6 @@
   "supportFile": false,
   "baseUrl": "http://localhost:8080",
   "viewportWidth": 400,
-  "viewportHeight": 400
+  "viewportHeight": 400,
+  "nodeVersion": "system"
 }

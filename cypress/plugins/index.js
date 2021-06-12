@@ -5,6 +5,7 @@
 // to play the role of another user
 // https://socket.io/docs/v4/client-initialization/
 const io = require('socket.io-client')
+const cypress = require('cypress')
 
 /**
  * @type {Cypress.PluginConfig}
@@ -42,6 +43,17 @@ module.exports = (on, config) => {
     getLastMessage() {
       // cy.task cannot return undefined value
       return lastMessage || null
+    },
+
+    openCypress(config = {}) {
+      console.log('running Cypress with config')
+      console.log('%o', config)
+
+      cypress.run(config)
+
+      // we do not wait for the Cypress process to finish
+      // because we want it to run concurrently with the current test
+      return null
     },
   })
 }
