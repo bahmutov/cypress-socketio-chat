@@ -13,7 +13,7 @@
     "pretty": "prettier --write 'cypress/**/*.js' index.js",
     "cy:first": "cypress run --config-file cy-first-user.json",
     "cy:second": "cypress run --config-file cy-second-user.json",
-    "chat": "concurrently npm:cy:first npm:cy:second"
+    "chat": "node ./cypress/pair/run"
   },
   "author": "Diky Hadna",
   "license": "ISC",

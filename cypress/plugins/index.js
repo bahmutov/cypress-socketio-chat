@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 
 // Socket.io client to allow Cypress itself
-// to connect from the plugin file to the chat app
-// to play the role of another user
+// to communicate with a central "checkpoint" server
 // https://socket.io/docs/v4/client-initialization/
 const io = require('socket.io-client')
 
@@ -14,17 +13,23 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
-  // connection to the chat server
-  let socket
-  let lastMessage
+  const socket = io('http://localhost:9090')
+
+  let checkpointName
+  socket.on('checkpoint', (name) => {
+    console.log('current checkpoint %s', name)
+    checkpointName = name
+  })
 
   on('task', {
-    connect(name) {
-      console.log('Cypress is connecting to socket server under name %s', name)
-      socket = io('http://localhost:8080')
+    checkpoint(name) {
+      socket.emit('checkpoint', name)
 
-      socket.emit('username', name)
-      socket.on('chat_message', (msg) => (lastMessage = msg))
+      return null
+    },
+
+    waitForCheckpoint(name) {
+      console.log('wairing for checkpoint "%s"', name)
 
       return null
     },
@@ -32,16 +37,6 @@ module.exports = (on, config) => {
     disconnect() {
       socket.disconnect()
       return null
-    },
-
-    say(message) {
-      socket.emit('chat_message', message)
-      return null
-    },
-
-    getLastMessage() {
-      // cy.task cannot return undefined value
-      return lastMessage || null
     },
   })
 }

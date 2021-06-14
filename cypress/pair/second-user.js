@@ -2,6 +2,8 @@
 
 // this test behaves as the second user to join the chat
 it('chats with the first user', () => {
+  cy.task('waitForCheckpoint', 'first user has joined')
+
   const name = 'Second'
   // we are chatting with the first user
   const firstName = 'First'
@@ -13,6 +15,7 @@ it('chats with the first user', () => {
 
   // make sure the greeting message is shown
   cy.contains('#messages li i', `${name} join the chat..`).should('be.visible')
+  cy.task('checkpoint', 'second user has joined')
 
   cy.get('#txt').type('Good to see you{enter}')
 
