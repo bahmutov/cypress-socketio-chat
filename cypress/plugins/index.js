@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 
 // Socket.io client to allow Cypress itself
-// to connect from the plugin file to the chat app
-// to play the role of another user
+// to communicate with a central "checkpoint" server
 // https://socket.io/docs/v4/client-initialization/
 const io = require('socket.io-client')
 
@@ -14,34 +13,73 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
-  // connection to the chat server
-  let socket
+  // this socket will be used to sync Cypress instance
+  // to another Cypress instance. We can create it right away
+  const cySocket = io('http://localhost:9090')
+
+  // this socket will act like a 2nd chat client
+  // directly connecting to the chat server
+  let chatSocket
   let lastMessage
 
+  let checkpointName
+  cySocket.on('checkpoint', (name) => {
+    console.log('current checkpoint %s', name)
+    checkpointName = name
+  })
+
   on('task', {
+    // acting like the 2nd chat user tasks
     connect(name) {
       console.log('Cypress is connecting to socket server under name %s', name)
-      socket = io('http://localhost:8080')
+      chatSocket = io('http://localhost:8080')
 
-      socket.emit('username', name)
-      socket.on('chat_message', (msg) => (lastMessage = msg))
+      chatSocket.emit('username', name)
+      chatSocket.on('chat_message', (msg) => (lastMessage = msg))
 
+      // cy.task should always return something
+      // it cannot return undefined
+      // https://on.cypress.io/task
       return null
     },
 
     disconnect() {
-      socket.disconnect()
+      chatSocket.disconnect()
       return null
     },
 
     say(message) {
-      socket.emit('chat_message', message)
+      console.log('saying "%s"', message)
+      chatSocket.emit('chat_message', message)
       return null
     },
 
     getLastMessage() {
-      // cy.task cannot return undefined value
       return lastMessage || null
+    },
+
+    // tasks for syncing multiple Cypress instances together
+    checkpoint(name) {
+      console.log('emitting checkpoint name "%s"', name)
+      cySocket.emit('checkpoint', name)
+
+      return null
+    },
+
+    waitForCheckpoint(name) {
+      console.log('waiting for checkpoint "%s"', name)
+
+      // TODO: set maximum waiting time
+      return new Promise((resolve) => {
+        const i = setInterval(() => {
+          console.log('checking, current checkpoint "%s"', checkpointName)
+          if (checkpointName === name) {
+            console.log('reached checkpoint "%s"', name)
+            clearInterval(i)
+            resolve(name)
+          }
+        }, 1000)
+      })
     },
   })
 }
