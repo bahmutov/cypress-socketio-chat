@@ -23,15 +23,26 @@ module.exports = (on, config) => {
 
   on('task', {
     checkpoint(name) {
+      console.log('emitting checkpoint name "%s"', name)
       socket.emit('checkpoint', name)
 
       return null
     },
 
     waitForCheckpoint(name) {
-      console.log('wairing for checkpoint "%s"', name)
+      console.log('waiting for checkpoint "%s"', name)
 
-      return null
+      // TODO: set maximum waiting time
+      return new Promise((resolve) => {
+        const i = setInterval(() => {
+          console.log('checking, current checkpoint "%s"', checkpointName)
+          if (checkpointName === name) {
+            console.log('reached checkpoint "%s"', name)
+            clearInterval(i)
+            resolve(name)
+          }
+        }, 1000)
+      })
     },
 
     disconnect() {

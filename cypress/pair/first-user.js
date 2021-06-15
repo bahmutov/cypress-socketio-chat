@@ -13,20 +13,20 @@ it('chats with the second user', () => {
 
   // make sure the greeting message is shown
   cy.contains('#messages li i', `${name} join the chat..`).should('be.visible')
-
   cy.task('checkpoint', 'first user has joined')
-  cy.task('waitForCheckpoint', 'second user has joined')
 
   // second user enters the chat
-  // NOTE: this assumes the first user loads the page first
-  // cy.contains('#messages li i', `${secondName} join the chat..`).should(
-  //   'be.visible',
-  // )
+  cy.task('waitForCheckpoint', 'second user has joined')
+  cy.contains('#messages li i', `${secondName} join the chat..`).should(
+    'be.visible',
+  )
 
-  // second user posts a message
+  // second user will post a message
   cy.contains('#messages li', 'Good to see you').contains('strong', secondName)
 
-  // reply to the second user
+  // we will reply to the second user
   cy.get('#txt').type('Glad to be here{enter}')
   cy.contains('#messages li', 'Glad to be here').contains('strong', name)
+  // make sure the second user saw our message
+  cy.task('waitForCheckpoint', 'second user saw glad to be here')
 })
