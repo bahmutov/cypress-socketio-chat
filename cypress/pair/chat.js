@@ -19,8 +19,18 @@ const wait = (ms) => {
 
 // Socket.io server to let two Cypress runners communicate and wait for "checkpoints"
 // https://socket.io/
+
+// keep the last checkpoint around
+// even if a test runner joins later, it
+// should still receive it right away
+let lastCheckpoint
+
 io.on('connection', (socket) => {
   console.log('chat new connection')
+  if (lastCheckpoint) {
+    console.log('sending the last checkpoint "%s"', lastCheckpoint)
+    socket.emit('checkpoint', lastCheckpoint)
+  }
 
   socket.on('disconnect', () => {
     console.log('disconnected')
@@ -28,6 +38,7 @@ io.on('connection', (socket) => {
 
   socket.on('checkpoint', (name) => {
     console.log('chat checkpoint: "%s"', name)
+    lastCheckpoint = name
     io.emit('checkpoint', name)
   })
 })
