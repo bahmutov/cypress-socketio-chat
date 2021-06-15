@@ -13,18 +13,55 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
-  const socket = io('http://localhost:9090')
+  // this socket will be used to sync Cypress instance
+  // to another Cypress instance. We can create it right away
+  const cySocket = io('http://localhost:9090')
+
+  // this socket will act like a 2nd chat client
+  // directly connecting to the chat server
+  let chatSocket
+  let lastMessage
 
   let checkpointName
-  socket.on('checkpoint', (name) => {
+  cySocket.on('checkpoint', (name) => {
     console.log('current checkpoint %s', name)
     checkpointName = name
   })
 
   on('task', {
+    // acting like the 2nd chat user tasks
+    connect(name) {
+      console.log('Cypress is connecting to socket server under name %s', name)
+      chatSocket = io('http://localhost:8080')
+
+      chatSocket.emit('username', name)
+      chatSocket.on('chat_message', (msg) => (lastMessage = msg))
+
+      // cy.task should always return something
+      // it cannot return undefined
+      // https://on.cypress.io/task
+      return null
+    },
+
+    disconnect() {
+      chatSocket.disconnect()
+      return null
+    },
+
+    say(message) {
+      console.log('saying "%s"', message)
+      chatSocket.emit('chat_message', message)
+      return null
+    },
+
+    getLastMessage() {
+      return lastMessage || null
+    },
+
+    // tasks for syncing multiple Cypress instances together
     checkpoint(name) {
       console.log('emitting checkpoint name "%s"', name)
-      socket.emit('checkpoint', name)
+      cySocket.emit('checkpoint', name)
 
       return null
     },
@@ -43,11 +80,6 @@ module.exports = (on, config) => {
           }
         }, 1000)
       })
-    },
-
-    disconnect() {
-      socket.disconnect()
-      return null
     },
   })
 }
