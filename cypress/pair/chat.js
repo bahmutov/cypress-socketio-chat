@@ -39,16 +39,18 @@ console.log('starting the first Cypress')
 
 // TODO: implement waiting for two test runners
 cypress
-  .open({
+  .run({
     configFile: 'cy-first-user.json',
   })
   .then((results) => {
     console.log('First Cypress has finished')
   })
 
+// delay starting the second Cypress instance
+// to avoid XVFB race condition
 wait(5000).then(() => {
   console.log('starting the second Cypress')
-  cypress.open({
+  cypress.run({
     configFile: 'cy-second-user.json'
   }).then((results) => {
     console.log('Second Cypress has finished')

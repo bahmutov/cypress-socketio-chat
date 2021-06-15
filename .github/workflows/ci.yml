@@ -25,4 +25,4 @@ jobs:
           install: false
           # the application is running already
           # from the previous "start" command
-          command: npm run chat
+          command: npm run chat:run
