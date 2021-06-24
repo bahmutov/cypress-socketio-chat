@@ -2,7 +2,7 @@ const arg = require('arg')
 
 const args = arg({
   '--open': Boolean,
-  '--port': Number
+  '--port': Number,
 })
 
 const port = args['--port'] || 9090
@@ -61,11 +61,13 @@ cypress
 // to avoid XVFB race condition
 wait(5000).then(() => {
   console.log('starting the second Cypress')
-  cypress.run({
-    configFile: 'cy-second-user.json'
-  }).then((results) => {
-    console.log('Second Cypress has finished')
-    // TODO: exit with the test code from both runners
-    process.exit(0)
-  })
+  return cypress
+    .run({
+      configFile: 'cy-second-user.json',
+    })
+    .then((results) => {
+      console.log('Second Cypress has finished')
+      // TODO: exit with the test code from both runners
+      process.exit(0)
+    })
 })

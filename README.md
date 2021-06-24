@@ -26,6 +26,54 @@ This repo also shows how to run 2 Cypress instances at the same time to "really"
 
 Look at the [package.json](./package.json) file to see the commands we use to run the first and second user specs - they are listed in [cy-first-user.json](./cy-first-user.json) and [cy-second-user.json](./cy-second-user.json) config files.
 
+The test runners wait for each other using a common Socket.io server created in the [chat.js](./cypress/pair/chat.js) script. This is a separate Socket.io server from the application.
+
+![Test communication](./images/chat-server.png)
+
+The first server logs in and reports that it is ready for the second test to start
+
+```js
+// cypress/pair/first-user.js
+/// <reference types="cypress" />
+
+// this test behaves as the first user to join the chat
+it('chats with the second user', () => {
+  const name = 'First'
+  const secondName = 'Second'
+
+  cy.visit('/', {
+    onBeforeLoad(win) {
+      cy.stub(win, 'prompt').returns(name)
+    },
+  })
+
+  // make sure the greeting message is shown
+  cy.contains('#messages li i', `${name} join the chat..`).should('be.visible')
+  cy.task('checkpoint', 'first user has joined')
+})
+```
+
+The second test runner executes its own test. It first waits for the checkpoint before visiting the page
+
+```js
+// cypress/pair/second-user.js
+/// <reference types="cypress" />
+
+// this test behaves as the second user to join the chat
+it('chats with the first user', () => {
+  cy.task('waitForCheckpoint', 'first user has joined')
+
+  const name = 'Second'
+  // we are chatting with the first user
+  const firstName = 'First'
+  cy.visit('/', {
+    onBeforeLoad(win) {
+      cy.stub(win, 'prompt').returns(name)
+    },
+  })
+})
+```
+
 [ci image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/ci/badge.svg?branch=main
 [ci url]: https://github.com/bahmutov/cypress-socketio-chat/actions
 [badges image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/badges/badge.svg?branch=main
