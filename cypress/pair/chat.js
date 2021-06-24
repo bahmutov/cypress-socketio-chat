@@ -45,29 +45,31 @@ io.on('connection', (socket) => {
 
 // TODO: implement reset before each test
 
-// TODO: implement --open vs run
-console.log('starting the first Cypress')
+if (args['--open']) {
+  console.log('opening the first Cypress')
+} else {
+  console.log('starting the first Cypress')
+}
 
-// TODO: implement waiting for two test runners
-cypress
-  .run({
-    configFile: 'cy-first-user.json',
-  })
-  .then((results) => {
-    console.log('First Cypress has finished')
-  })
+const cypressAction = args['--open'] ? cypress.open : cypress.run
+const firstCypress = cypressAction({
+  configFile: 'cy-first-user.json',
+}).then((results) => {
+  console.log('First Cypress has finished')
+  return results
+})
 
 // delay starting the second Cypress instance
 // to avoid XVFB race condition
-wait(5000).then(() => {
+const secondCypress = wait(5000).then(() => {
   console.log('starting the second Cypress')
-  return cypress
-    .run({
-      configFile: 'cy-second-user.json',
-    })
-    .then((results) => {
-      console.log('Second Cypress has finished')
-      // TODO: exit with the test code from both runners
-      process.exit(0)
-    })
+  return cypressAction({
+    configFile: 'cy-second-user.json',
+  })
+})
+
+Promise.all([firstCypress, secondCypress]).then(() => {
+  // TODO: exit with the test code from both runners
+  console.log('all done, exiting')
+  process.exit(0)
 })

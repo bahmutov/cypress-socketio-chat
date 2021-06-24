@@ -22,6 +22,7 @@ module.exports = (on, config) => {
   let chatSocket
   let lastMessage
 
+  // receiving the checkpoint name reached by any test runner
   let checkpointName
   cySocket.on('checkpoint', (name) => {
     console.log('current checkpoint %s', name)

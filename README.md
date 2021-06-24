@@ -6,7 +6,15 @@ The original chat program copied from [dkhd/node-group-chat](https://github.com/
 
 ![Chat test](images/chat.png)
 
-Read the blog posts [Test a Socket.io Chat App using Cypress](https://glebbahmutov.com/blog/test-socketio-chat-using-cypress/) and [Run Two Cypress Test Runners At The Same Time](https://glebbahmutov.com/blog/run-two-cypress-runners/).
+## Blog posts
+
+Testing a Socket.io chat application can be done in several ways. Read the following blog posts to see the alternatives.
+
+Title | Description
+---|---
+[Test a Socket.io Chat App using Cypress](https://glebbahmutov.com/blog/test-socketio-chat-using-cypress/) | Simulates the second user by connecting to the chat server from the plugins file
+[Run Two Cypress Test Runners At The Same Time](https://glebbahmutov.com/blog/run-two-cypress-runners/) | Launches two test runners, giving them separate specs to run
+[Sync Two Cypress Runners via Checkpoints](https://glebbahmutov.com/blog/sync-two-cypress-runners/) | Launches two test runners, which stay in sync by communicating via their own Socket.io server
 
 ## Specs
 
