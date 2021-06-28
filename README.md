@@ -23,7 +23,8 @@ Name | Description
 [first-spec](./cypress/integration/first-spec.js) | Tests that the user can post a message and see it
 [random-name-spec.js](./cypress/integration/random-name-spec.js) | Creates a random user name for the test
 [client-api-spec.js](./cypress/integration/client-api-spec.js) | Invokes events as a 2nd user using app actions
-[socket-spec.js](./cypress/integration/socket-spec.js) | Connects to the Socket.io server as a 2nd user
+[socket-spec.js](./cypress/integration/socket-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the plugin file
+[socket-from-browser-spec.js](./cypress/integration/socket-from-browser-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the spec file
 
 ## Running 2 Cypress instances
 
