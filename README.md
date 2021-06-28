@@ -25,7 +25,7 @@ Name | Description
 [client-api-spec.js](./cypress/integration/client-api-spec.js) | Invokes events as a 2nd user using app actions
 [socket-spec.js](./cypress/integration/socket-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the plugin file
 [socket-from-browser-spec.js](./cypress/integration/socket-from-browser-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the spec file
-[mock-socket-spec.js](./cypress/integration/mock-socket-spec.js) | The test forces the app to use a mock socket object instead of the real connection
+[mock-socket-spec.js](./cypress/integration/mock-socket-spec.js) | The test forces the app to use a mock socket object instead of the real connection, see [video](https://youtu.be/soNyOqpi_gQ)
 
 ## Running 2 Cypress instances
 
