@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
-it('chats', () => {
+it('posts my messages', () => {
+  // https://on.cypress.io/visit
   cy.visit('/', {
     onBeforeLoad(win) {
       // when the application asks for the name

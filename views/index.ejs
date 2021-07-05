@@ -64,6 +64,12 @@
       var socket = io.connect('http://localhost:8080')
 
       const clientActions = {
+        setUsername(name) {
+          socket.emit('username', name)
+        },
+        sendMessage(msg) {
+          socket.emit('chat_message', msg)
+        },
         onChatMessage(msg) {
           $('#messages').append($('<li>').html(msg))
         },
@@ -72,13 +78,15 @@
         },
       }
       if (window.Cypress) {
-        window.clientActions = clientActions
+        // when running inside a Cypress test,
+        // expose the clientActions object
+        window.__clientActions = clientActions
       }
 
       // submit text message without reload/refresh the page
       $('form').submit(function (e) {
         e.preventDefault() // prevents page reloading
-        socket.emit('chat_message', $('#txt').val())
+        clientActions.sendMessage($('#txt').val())
         $('#txt').val('')
         return false
       })
@@ -95,8 +103,8 @@
       socket.on('is_online', clientActions.isOnline)
 
       // ask username
-      var username = prompt('Please tell me your name')
-      socket.emit('username', username)
+      const username = prompt('Please tell me your name')
+      clientActions.setUsername(username)
     </script>
   </body>
 </html>

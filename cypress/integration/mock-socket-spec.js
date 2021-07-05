@@ -55,7 +55,7 @@ describe('Mock socket', () => {
         expect(username, 'username').to.equal(name)
       })
 
-    // try sending a message
+    // try sending a message via page UI
     cy.get('#txt').type('Hello there{enter}')
     cy.contains('#messages li', 'Hello there').contains('strong', name)
 
