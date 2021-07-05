@@ -14,6 +14,7 @@ describe('Mocking app API', () => {
             clientActions = client
             // spy on the client actions
             cy.spy(clientActions, 'setUsername').as('setUsername')
+            cy.spy(clientActions, 'sendMessage').as('sendMessage')
           },
           get() {
             return clientActions
@@ -25,6 +26,9 @@ describe('Mocking app API', () => {
       // make the test wait until the app sets this property
       .its('__clientActions')
     cy.get('@setUsername').should('have.been.calledWith', name)
+    // sends the message from UI to app code
+    cy.get('#txt').type('Hello there{enter}')
+    cy.get('@sendMessage').should('have.been.calledWith', 'Hello there')
   })
 
   it('shows status for 2nd user', () => {
