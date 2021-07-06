@@ -2,3 +2,4 @@ node_modules/
 cypress/videos
 cypress/videos-pair/
 cypress/screenshots-pair/
+.DS_Store

@@ -3,7 +3,7 @@
 const io = require('socket.io-client')
 
 describe('Open 2nd socket connection', () => {
-  it('sees the 2nd user join', () => {
+  it('communicates with 2nd user', () => {
     // the browser is the 1st user
     const name = `Cy_${Cypress._.random(1000)}`
 
