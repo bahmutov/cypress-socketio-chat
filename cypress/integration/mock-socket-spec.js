@@ -28,14 +28,18 @@ describe('Mock socket', () => {
   })
 
   it('chats', () => {
-    cy.intercept('/', (req) => {
+    cy.intercept('/scripts/app.js', (req) => {
+      // delete any cache headers to get a fresh response
+      delete req.headers['if-none-match']
+      delete req.headers['if-modified-since']
+
       req.continue((res) => {
         res.body = res.body.replace(
           "io.connect('http://localhost:8080')",
           'window.testSocket',
         )
       })
-    }).as('html')
+    }).as('appjs')
 
     // the browser is the 1st user
     const name = `Cy_${Cypress._.random(1000)}`
@@ -47,7 +51,7 @@ describe('Mock socket', () => {
         cy.stub(win, 'prompt').returns(name)
       },
     })
-    cy.wait('@html') // our HTML intercept has worked
+    cy.wait('@appjs') // our code intercept has worked
       // verify we have received the username
       // use .should(callback) to retry
       // until the variable username has been set

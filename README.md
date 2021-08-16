@@ -16,6 +16,8 @@ Title | Description
 [Run Two Cypress Test Runners At The Same Time](https://glebbahmutov.com/blog/run-two-cypress-runners/) | Launches two test runners, giving them separate specs to run
 [Sync Two Cypress Runners via Checkpoints](https://glebbahmutov.com/blog/sync-two-cypress-runners/) | Launches two test runners, which stay in sync by communicating via their own Socket.io server
 
+Flip through the presentation slides [E2E Testing For A Real-Time Chat Web Application](https://slides.com/bahmutov/e2e-for-chat)
+
 ## Specs
 
 Name | Description
