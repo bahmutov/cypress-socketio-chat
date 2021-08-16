@@ -22,4 +22,10 @@ it('chats with the first user', () => {
   // a message from the first user arrives
   cy.contains('#messages li', 'Glad to be here').contains('strong', firstName)
   cy.task('checkpoint', 'second user saw glad to be here')
+
+  // the first user will disconnect now
+  cy.contains('#messages li i', `${firstName} leave the chat..`).should(
+    'be.visible',
+  )
+  cy.task('checkpoint', 'second user saw first user leave')
 })

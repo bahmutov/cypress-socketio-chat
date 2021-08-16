@@ -29,4 +29,10 @@ it('chats with the second user', () => {
   cy.contains('#messages li', 'Glad to be here').contains('strong', name)
   // make sure the second user saw our message
   cy.task('waitForCheckpoint', 'second user saw glad to be here')
+
+  // disconnect from the chat by visiting the blank page
+  cy.window((win) => {
+    win.location.href = 'about:blank'
+  })
+  cy.task('waitForCheckpoint', 'second user saw first user leave')
 })

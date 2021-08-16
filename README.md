@@ -28,6 +28,7 @@ Name | Description
 [socket-spec.js](./cypress/integration/socket-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the plugin file
 [socket-from-browser-spec.js](./cypress/integration/socket-from-browser-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the spec file
 [mock-socket-spec.js](./cypress/integration/mock-socket-spec.js) | The test forces the app to use a mock socket object instead of the real connection, see [video](https://youtu.be/soNyOqpi_gQ)
+[disconnect-spec.js](./cypress/integration/disconnect-spec.js) | Checks if the user disconnects correctly
 
 ## Running 2 Cypress instances
 

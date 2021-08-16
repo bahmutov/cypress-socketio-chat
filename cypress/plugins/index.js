@@ -41,6 +41,7 @@ module.exports = (on, config) => {
 
       chatSocket.emit('username', name)
       chatSocket.on('chat_message', (msg) => (lastMessage = msg))
+      chatSocket.on('is_online', (msg) => (lastMessage = msg))
 
       // cy.task should always return something
       // it cannot return undefined
