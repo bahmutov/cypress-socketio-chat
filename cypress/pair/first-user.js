@@ -31,7 +31,7 @@ it('chats with the second user', () => {
   cy.task('waitForCheckpoint', 'second user saw glad to be here')
 
   // disconnect from the chat by visiting the blank page
-  cy.window((win) => {
+  cy.window().then((win) => {
     win.location.href = 'about:blank'
   })
   cy.task('waitForCheckpoint', 'second user saw first user leave')
