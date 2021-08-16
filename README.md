@@ -89,7 +89,9 @@ it('chats with the first user', () => {
 
 ## Code coverage
 
-Added instrumenting front-end code using `istanbul-lib-instrument` module, see [index.js](./index.js) file.
+Added instrumenting front-end code using `istanbul-lib-instrument` module, see [index.js](./index.js) file. Read the blog post [Code Coverage For Chat App](https://glebbahmutov.com/blog/code-coverage-for-chat-tests/).
+
+![Fullstack code coverage](./images/second-coverage.png)
 
 Note: I did not use [Istanbul middleware](https://github.com/gotwarlost/istanbul-middleware#readme) because it seemed to not support ES6 syntax (the middleware module had no releases for a long time).
 
