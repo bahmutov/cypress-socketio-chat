@@ -86,6 +86,10 @@ it('chats with the first user', () => {
 })
 ```
 
+## Code coverage
+
+Added instrumenting front-end code using [Istanbul middleware](https://github.com/gotwarlost/istanbul-middleware#readme)
+
 [ci image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/ci/badge.svg?branch=main
 [ci url]: https://github.com/bahmutov/cypress-socketio-chat/actions
 [badges image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/badges/badge.svg?branch=main
