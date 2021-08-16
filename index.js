@@ -1,10 +1,18 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
+const path = require('path')
+
+app.use(morgan('dev'))
 
 app.get('/', function (req, res) {
   res.render('index.ejs')
+})
+
+app.get('/scripts/app.js', function (req, res) {
+  res.sendFile(path.resolve('./scripts/app.js'))
 })
 
 io.sockets.on('connection', function (socket) {
