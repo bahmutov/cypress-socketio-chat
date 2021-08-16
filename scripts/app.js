@@ -27,7 +27,6 @@ $('form').submit(function (e) {
   const message = $('#txt').val()
 
   clientActions.sendMessage(message)
-
   $('#txt').val('')
   return false
 })
