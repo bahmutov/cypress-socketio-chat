@@ -13,6 +13,10 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 
+  // code coverage tasks
+  // github.com/cypress-io/code-coverage
+  require('@cypress/code-coverage/task')(on, config)
+
   // this socket will be used to sync Cypress instance
   // to another Cypress instance. We can create it right away
   const cySocket = io('http://localhost:9090')
@@ -83,4 +87,9 @@ module.exports = (on, config) => {
       })
     },
   })
+
+  // IMPORTANT to return the config object
+  // with the any changed environment variables
+  // at least for code coverage
+  return config
 }

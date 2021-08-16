@@ -88,7 +88,15 @@ it('chats with the first user', () => {
 
 ## Code coverage
 
-Added instrumenting front-end code using [Istanbul middleware](https://github.com/gotwarlost/istanbul-middleware#readme)
+Added instrumenting front-end code using [Istanbul middleware](https://github.com/gotwarlost/istanbul-middleware#readme). Each application source file is automatically instrumented and sent to the front-end.
+
+```js
+const im = require('istanbul-middleware')
+
+// all JS files in "scripts" folder will be sent instrumented to the browser
+im.hookLoader(__dirname)
+app.use(im.createClientHandler(__dirname)
+```
 
 [ci image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/ci/badge.svg?branch=main
 [ci url]: https://github.com/bahmutov/cypress-socketio-chat/actions

@@ -4,11 +4,17 @@ const morgan = require('morgan')
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const path = require('path')
-const im = require('istanbul-middleware')
+const fs = require('fs')
+
+const { createInstrumenter } = require('istanbul-lib-instrument')
+const instrumenter = createInstrumenter()
+
+// seems to have problems with ES6 code
+// const im = require('istanbul-middleware')
 
 // all JS files in "scripts" folder will be sent instrumented to the browser
-im.hookLoader(__dirname)
-app.use(im.createClientHandler(__dirname))
+// im.hookLoader(__dirname)
+// app.use(im.createClientHandler(__dirname))
 
 app.use(morgan('dev'))
 
@@ -16,9 +22,13 @@ app.get('/', function (req, res) {
   res.render('index.ejs')
 })
 
-// app.get('/scripts/app.js', function (req, res) {
-//   res.sendFile(path.resolve('./scripts/app.js'))
-// })
+app.get('/scripts/app.js', function (req, res) {
+  const filename = path.join(__dirname, 'scripts', 'app.js')
+  const src = fs.readFileSync(filename, 'utf8')
+  const instrumented = instrumenter.instrumentSync(src, filename)
+  res.set('Content-Type', 'application/javascript')
+  res.send(instrumented)
+})
 
 io.sockets.on('connection', function (socket) {
   console.log('new connection')
