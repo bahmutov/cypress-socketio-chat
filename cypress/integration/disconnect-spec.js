@@ -27,5 +27,6 @@ it('disconnects by visiting the blank page', () => {
   })
 
   // check if the disconnect message was received by the chat server
+  cy.wait(3000) // hopefully 3 second delay is enough
   cy.task('getLastMessage').should('contain', `${name} left the chat`)
 })
