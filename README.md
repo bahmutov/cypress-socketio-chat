@@ -15,6 +15,7 @@ Title | Description
 [Test a Socket.io Chat App using Cypress](https://glebbahmutov.com/blog/test-socketio-chat-using-cypress/) | Simulates the second user by connecting to the chat server from the plugins file
 [Run Two Cypress Test Runners At The Same Time](https://glebbahmutov.com/blog/run-two-cypress-runners/) | Launches two test runners, giving them separate specs to run
 [Sync Two Cypress Runners via Checkpoints](https://glebbahmutov.com/blog/sync-two-cypress-runners/) | Launches two test runners, which stay in sync by communicating via their own Socket.io server
+[Code Coverage For Chat App](https://glebbahmutov.com/blog/code-coverage-for-chat-tests/) | Instruments and measures the fullstack code coverage
 
 Flip through the presentation slides [E2E Testing For A Real-Time Chat Web Application](https://slides.com/bahmutov/e2e-for-chat)
 
