@@ -4,17 +4,12 @@ const morgan = require('morgan')
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const path = require('path')
+const fs = require('fs')
 
-app.use(morgan('dev'))
+const { createInstrumenter } = require('istanbul-lib-instrument')
+const instrumenter = createInstrumenter()
 
-app.get('/', function (req, res) {
-  res.render('index.ejs')
-})
-
-app.get('/scripts/app.js', function (req, res) {
-  res.sendFile(path.resolve('./scripts/app.js'))
-})
-
+// Socket communication server
 io.sockets.on('connection', function (socket) {
   console.log('new connection')
 
@@ -38,6 +33,26 @@ io.sockets.on('connection', function (socket) {
     )
   })
 })
+
+app.use(morgan('dev'))
+
+app.get('/', function (req, res) {
+  res.render('index.ejs')
+})
+
+app.get('/scripts/app.js', function (req, res) {
+  const filename = path.join(__dirname, 'scripts', 'app.js')
+  const src = fs.readFileSync(filename, 'utf8')
+  const instrumented = instrumenter.instrumentSync(src, filename)
+  res.set('Content-Type', 'application/javascript')
+  res.send(instrumented)
+})
+
+// https://github.com/cypress-io/code-coverage#instrument-backend-code
+/* istanbul ignore next */
+if (global.__coverage__) {
+  require('@cypress/code-coverage/middleware/express')(app)
+}
 
 const server = http.listen(8080, function () {
   console.log('listening on *:8080')

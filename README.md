@@ -28,6 +28,7 @@ Name | Description
 [socket-spec.js](./cypress/integration/socket-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the plugin file
 [socket-from-browser-spec.js](./cypress/integration/socket-from-browser-spec.js) | Mimics the 2nd user by connecting to the Socket.io server from the spec file
 [mock-socket-spec.js](./cypress/integration/mock-socket-spec.js) | The test forces the app to use a mock socket object instead of the real connection, see [video](https://youtu.be/soNyOqpi_gQ)
+[disconnect-spec.js](./cypress/integration/disconnect-spec.js) | Checks if the user disconnects correctly
 
 ## Running 2 Cypress instances
 
@@ -85,6 +86,12 @@ it('chats with the first user', () => {
   })
 })
 ```
+
+## Code coverage
+
+Added instrumenting front-end code using `istanbul-lib-instrument` module, see [index.js](./index.js) file.
+
+Note: I did not use [Istanbul middleware](https://github.com/gotwarlost/istanbul-middleware#readme) because it seemed to not support ES6 syntax (the middleware module had no releases for a long time).
 
 [ci image]: https://github.com/bahmutov/cypress-socketio-chat/workflows/ci/badge.svg?branch=main
 [ci url]: https://github.com/bahmutov/cypress-socketio-chat/actions
