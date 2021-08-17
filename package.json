@@ -26,7 +26,7 @@
     "socket.io": "4.1.3"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.10",
+    "@cypress/code-coverage": "3.9.10",
     "arg": "^5.0.0",
     "concurrently": "6.2.0",
     "cypress": "8.2.0",
