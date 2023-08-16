@@ -29,7 +29,7 @@
     "@cypress/code-coverage": "3.9.12",
     "arg": "^5.0.0",
     "concurrently": "6.2.0",
-    "cypress": "9.6.1",
+    "cypress": "12.17.4",
     "cypress-recurse": "1.35.2",
     "nyc": "^15.1.0",
     "prettier": "2.3.1",
