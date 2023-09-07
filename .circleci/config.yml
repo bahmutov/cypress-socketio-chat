@@ -2,17 +2,17 @@ version: 2.1
 # Uses the official Cypress Orb
 # https://circleci.com/developer/orbs/orb/cypress-io/cypress
 orbs:
-  cypress: cypress-io/cypress@3
+  cypress: cypress-io/cypress@3.1.4
 workflows:
   build:
     jobs:
-      - cypress/run:
-          # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
-          # in CircleCI → Project Settings → Environment Variables
-          # Records in parallel to Cypress Cloud 
-          # https://docs.cypress.io/guides/guides/parallelization
-          parallelism: 2 # Uses 2 parallel instances
-          # Starts web server for E2E tests - replace with your own server invocation
-          # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
-          start-command: npm start
-          cypress-command: 'npm run chat:run'
+      example-job:
+        docker:
+          # replace with your preferred image
+          - image: cimg/base:stable
+        steps:
+         - cypress/run-tests
+    workflows:
+      example-workflow:
+        jobs:
+          - example-job
