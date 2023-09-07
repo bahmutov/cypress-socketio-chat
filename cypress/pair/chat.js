@@ -53,7 +53,7 @@ if (args['--open']) {
 
 const cypressAction = args['--open'] ? cypress.open : cypress.run
 const firstCypress = cypressAction({
-  configFile: 'cy-first-user.json',
+  configFile: 'cy-first-user.config.js',
 }).then((results) => {
   console.log('First Cypress has finished')
   return results
@@ -64,7 +64,7 @@ const firstCypress = cypressAction({
 const secondCypress = wait(5000).then(() => {
   console.log('starting the second Cypress')
   return cypressAction({
-    configFile: 'cy-second-user.json',
+    configFile: 'cy-second-user.config.js',
   })
 })
 
