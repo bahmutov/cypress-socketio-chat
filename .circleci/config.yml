@@ -1,20 +1,10 @@
 version: 2.1
-
 orbs:
-  cypress: cypress-io/cypress@3.1.4
-
+  cypress: cypress-io/cypress@3
 workflows:
-  version: 2
   build:
     jobs:
-      - example-job:
-          parallelism: 2
-
-jobs:
-  example-job:
-    docker:
-      - image: cimg/base:stable
-    steps:
       - cypress/run:
-          parallelism: 2 # Uses 2 parallel instances
-          cypress-command: 'npm run chat:run'
+          start-command: 'npm run start'
+          cypress-command: 'npx cypress run --parallel --record --group all tests'
+          parallelism: 4
