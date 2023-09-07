@@ -17,5 +17,4 @@ jobs:
     steps:
       - cypress/run:
           parallelism: 2 # Uses 2 parallel instances
-          start-command: npm start
           cypress-command: 'npm run chat:run'
