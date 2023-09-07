@@ -14,7 +14,7 @@
     "cy:first": "cypress run --config-file cy-first-user.json",
     "cy:second": "cypress run --config-file cy-second-user.json",
     "chat:open": "node ./cypress/pair/chat --open",
-    "chat:run": "node ./cypress/pair/chat --record --key $CYPRESS_RECORD_KEY"
+    "chat:run": "node ./cypress/pair/chat"
   },
   "author": "Diky Hadna",
   "license": "ISC",
