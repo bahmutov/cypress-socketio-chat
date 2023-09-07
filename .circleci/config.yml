@@ -8,3 +8,4 @@ workflows:
           start-command: 'npm run start'
           cypress-command: 'npx cypress run --parallel --record --group all tests'
           parallelism: 4
+          
