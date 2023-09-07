@@ -3,9 +3,13 @@ const arg = require('arg')
 const args = arg({
   '--open': Boolean,
   '--port': Number,
+  '--record': Boolean,
+  '--key': String,
 })
 
-const port = args['--port'] || 9090
+const port = args['--port'] || 9090;
+const record = args['--record'];
+const key = args['--key'];
 
 const cypress = require('cypress')
 const io = require('socket.io')(port)
@@ -54,6 +58,7 @@ if (args['--open']) {
 const cypressAction = args['--open'] ? cypress.open : cypress.run
 const firstCypress = cypressAction({
   configFile: 'cy-first-user.config.js',
+  record,key,
 }).then((results) => {
   console.log('First Cypress has finished')
   return results
@@ -65,6 +70,7 @@ const secondCypress = wait(5000).then(() => {
   console.log('starting the second Cypress')
   return cypressAction({
     configFile: 'cy-second-user.config.js',
+    record,key,
   })
 })
 
