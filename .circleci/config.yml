@@ -5,7 +5,5 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          start-command: 'npm run start'
-          cypress-command: 'npx cypress run --parallel --record --group all tests'
+          cypress-command: 'npm run chat:run'
           parallelism: 4
-          
