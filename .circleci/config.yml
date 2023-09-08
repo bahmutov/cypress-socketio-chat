@@ -10,10 +10,14 @@ jobs:
     steps:
       - checkout
 
-      # Replace these commands with your build and test steps
+      # Step 1: Clean Build
       - run:
-          name: Install Dependencies
-          command: npm install
+          name: Clean Build
+          command: |
+            rm -rf <directory or files>  # Clean generated files or directories
+            npm cache clean --force      # Clean npm cache
+            npm install                 # Reinstall dependencies
+            npm run build               # Rebuild if needed
 
   run-cypress:
     docker:
@@ -22,9 +26,9 @@ jobs:
     steps:
       - checkout
 
-      # Replace this with the path to your script
+      # Step 2: Run Cypress Tests
       - run:
-          name: Run Cypress Script
+          name: Run Cypress Tests
           command: ./run-cypress-tests.sh
 
 workflows:
