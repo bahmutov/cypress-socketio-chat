@@ -9,7 +9,7 @@ exit_with_error() {
   exit 1
 }
 
-# Run Cypress tests using chat.js
+# Function to run Cypress tests using chat.js
 run_cypress_tests() {
   local record="$1"
   local key="$2"
@@ -19,12 +19,20 @@ run_cypress_tests() {
   # Execute chat.js with the provided record and key options
   node ./cypress/pair/chat.js --record="$record" --key="$key"
 
+  # Check the exit code of the Cypress tests
   if [ $? -ne 0 ]; then
     exit_with_error "Cypress tests failed."
+  else
+    echo "Cypress tests passed."
   fi
-
-  echo "Cypress tests passed."
 }
+
+# Main script
+
+# Check if CYPRESS_RECORD_KEY is set
+if [ -z "$CYPRESS_RECORD_KEY" ]; then
+  exit_with_error "CYPRESS_RECORD_KEY is not set. Please set it."
+fi
 
 # Run Cypress tests with the provided Record Key
 run_cypress_tests true "$CYPRESS_RECORD_KEY"

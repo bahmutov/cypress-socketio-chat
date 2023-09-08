@@ -1,5 +1,6 @@
 const arg = require('arg');
-
+const cypress = require('cypress');
+const io = require('socket.io')();
 
 const args = arg({
   '--open': Boolean,
@@ -12,68 +13,74 @@ const port = args['--port'] || 9090;
 const record = args['--record'];
 const key = args['--key'];
 
-const cypress = require('cypress');
-const io = require('socket.io')(port);
-
-// Utility function for delaying async actions
-const wait = (ms) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+// Error handling function
+const handleError = (error) => {
+  console.error(error);
+  process.exit(1); // Exit with a non-zero code to indicate failure
 };
 
-let lastCheckpoint;
-
+// Socket.io server to let two Cypress runners communicate and wait for "checkpoints"
 io.on('connection', (socket) => {
-  console.log('New connection');
+  console.log('chat new connection');
   if (lastCheckpoint) {
-    console.log('Sending the last checkpoint "%s"', lastCheckpoint);
+    console.log('sending the last checkpoint "%s"', lastCheckpoint);
     socket.emit('checkpoint', lastCheckpoint);
   }
 
   socket.on('disconnect', () => {
-    console.log('Disconnected');
+    console.log('disconnected');
   });
 
   socket.on('checkpoint', (name) => {
-    console.log('Checkpoint: "%s"', name);
+    console.log('chat checkpoint: "%s"', name);
     lastCheckpoint = name;
     io.emit('checkpoint', name);
   });
 });
 
-console.log(args['--open'] ? 'Opening the first Cypress' : 'Starting the first Cypress');
-
-const cypressAction = args['--open'] ? cypress.open : cypress.run;
-
-const firstCypress = cypressAction({
-  configFile: 'cy-first-user.config.js',
-  record,
-  key,
-})
-  .then((results) => {
-    console.log('First Cypress has finished');
+// Wrap Cypress runs in a function for better error handling
+const runCypress = async (configFile) => {
+  try {
+    const results = await cypress.run({ configFile, record, key });
+    console.log('Cypress has finished');
     return results;
-  })
-  .catch((error) => {
-    console.error('Error running the first Cypress:', error);
-    process.exit(1);
-  });
+  } catch (error) {
+    handleError(error);
+  }
+};
 
-wait(5000)
-  .then(() => {
-    console.log('Starting the second Cypress');
-    return cypressAction({
-      configFile: 'cy-second-user.config.js',
-      record,
-      key,
-    });
+let lastCheckpoint;
+
+if (args['--open']) {
+  console.log('opening the first Cypress');
+} else {
+  console.log('starting the first Cypress');
+}
+
+const firstCypressPromise = runCypress('cy-first-user.config.js');
+const secondCypressPromise = new Promise((resolve) => {
+  setTimeout(() => {
+    console.log('starting the second Cypress');
+    resolve(runCypress('cy-second-user.config.js'));
+  }, 5000);
+});
+
+Promise.all([firstCypressPromise, secondCypressPromise])
+  .then(([firstResults, secondResults]) => {
+    // Determine the exit code based on test results
+    const exitCode = determineExitCode(firstResults, secondResults);
+    console.log('all done, exiting with code', exitCode);
+    process.exit(exitCode);
   })
-  .then(() => {
-    console.log('All done, exiting');
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error('Error running the second Cypress:', error);
-    process.exit(1);
-  });
+  .catch(handleError);
+
+// Function to determine the exit code based on test results
+function determineExitCode(firstResults, secondResults) {
+  // You can implement custom logic here to analyze test results
+  // and return an appropriate exit code.
+  // For example, if any test failed, return 1. Otherwise, return 0.
+  if (firstResults.totalFailed || secondResults.totalFailed) {
+    return 1; // At least one test failed
+  }
+  return 0; // All tests passed
+}
