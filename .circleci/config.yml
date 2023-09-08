@@ -1,63 +1,51 @@
 version: 2.1
 
-executors:
-  node-executor:
-    docker:
-      - image: circleci/node:14
-
 jobs:
-  build:
-    executor: node-executor
-    working_directory: ~/app
-
+  cypress-tests:
+    docker:
+      - image: cypress/base:latest # Use an appropriate Cypress image (adjust the version if needed)
+    working_directory: /home/circleci/project
+    parallelism: 2  # Adjust the number of parallel jobs as needed
     steps:
       - checkout
 
+      # Restore cached Cypress binaries (if available)
       - restore_cache:
           keys:
-            - v1-deps-{{ checksum "package-lock.json" }}
-            - v1-deps-
+            - cypress-v1-{{ checksum "package-lock.json" }}
 
+      # Install dependencies if cache is not restored
       - run:
-          name: Install Dependencies
-          command: npm install
+          name: Clean Build Environment
+          command: |
+            rm -rf node_modules
+            rm -rf ~/.cache/Cypress
+            npm install
+          
+      # Debugging logs
+      - run:
+          name: Enable Debugging Logs
+          command: |
+            export NODE_OPTIONS=--trace-warnings
+            export DEBUG=cypress:*
 
+      # Save Cypress binaries to cache for future use
       - save_cache:
+          key: cypress-v1-{{ checksum "package-lock.json" }}
           paths:
-            - node_modules
-          key: v1-deps-{{ checksum "package-lock.json" }}
+            - ~/.cache/Cypress
 
+      # Make the script executable (if needed)
+      - run:
+          name: Make Script Executable
+          command: chmod +x run-cypress-tests.sh
+
+      # Run Cypress tests in parallel (adjust the command as needed)
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
 
-      - persist_to_workspace:
-          root: .
-          paths:
-            - cypress/videos
-            - cypress/screenshots
-
-  deploy:
-    docker:
-      - image: cypress/base:14
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-
-      - run:
-          name: Transfer Test Artifacts
-          command: cp -a /tmp/workspace/cypress/videos /tmp/workspace/cypress/screenshots /tmp/workspace/artifacts
-
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - artifacts
-
 workflows:
-  version: 2
-  build_and_test:
+  build:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+      - cypress-tests
