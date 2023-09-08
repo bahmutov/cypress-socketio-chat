@@ -8,6 +8,11 @@ jobs:
     steps:
       - checkout
       
+      # Install the libnss3 library
+      - run:
+          name: Install libnss3
+          command: sudo apt-get install libnss3 -y
+
       # Restore cached Cypress binaries (if available)
       - restore_cache:
           keys:
