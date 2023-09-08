@@ -1,3 +1,3 @@
 
 
-node ./cypress/pair/chat --record --key $CYPRESS_RECORD_KEY
+npm run chat -- --record --key $CYPRESS_RECORD_KEY
