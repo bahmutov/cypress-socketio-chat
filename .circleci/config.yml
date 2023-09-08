@@ -5,5 +5,5 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          cypress-command: 'npm run chat:run cypress run --record --key ${CYPRESS_RECORD_KEY}'
+          cypress-command: 'npm run chat:run --record --key ${CYPRESS_RECORD_KEY}'
           parallelism: 4
