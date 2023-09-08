@@ -1,10 +1,25 @@
 version: 2.1
-orbs:
-  cypress: cypress-io/cypress@3.1.4
+
+jobs:
+  cypress-tests:
+    docker:
+      - image: cypress/base:14
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run Cypress Tests
+          command: ./run-cypress-tests.sh
+
+# Define parallelism
+executors:
+  parallelism: 4  # Adjust the number as needed
+
 workflows:
+  version: 2
   build:
     jobs:
-      - cypress/run:
-          cypress-command: 'npm run chat:run --record --key $CYPRESS_RECORD_KEY'
-          parallelism: 4
-
+      - cypress-tests:
+          parallelism: 4  # Adjust the number to match executors
