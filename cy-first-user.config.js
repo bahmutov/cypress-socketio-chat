@@ -3,8 +3,8 @@ const { defineConfig } = require('cypress');
 module.exports = defineConfig({
   projectId: "6zj823",
   fixturesFolder: false,
-  viewportWidth: 400,
-  viewportHeight: 400,
+  viewportWidth: 1366,
+  viewportHeight: 768,
   defaultCommandTimeout: 15000,
   videosFolder: 'cypress/videos-pair/first',
   screenshotsFolder: 'cypress/screenshots-pair/first',
