@@ -1,8 +1,6 @@
-// Import the necessary functions from 'cypress'
-import { defineConfig } from 'cypress';
+const { defineConfig } = require('cypress')
 
-// Define and export the configuration using ESM syntax
-export default defineConfig({
+module.exports = defineConfig({
   projectId: "6zj823",
   fixturesFolder: false,
   viewportWidth: 400,
@@ -14,9 +12,9 @@ export default defineConfig({
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
-      return require('./cypress/plugins/index.js')(on, config);
+      return require('./cypress/plugins/index.js')(on, config)
     },
     baseUrl: 'http://www.google.com',
     specPattern: 'cypress/pair/**/second-user.js',
   },
-});
+})
