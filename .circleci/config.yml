@@ -17,7 +17,10 @@ jobs:
       # Install dependencies if cache is not restored
       - run:
           name: Install Dependencies
-          command: npm ci
+          command: |
+              rm -rf ~/.npm
+              rm -rf node_modules
+              npm ci
 
       # Debugging logs
       - run:
