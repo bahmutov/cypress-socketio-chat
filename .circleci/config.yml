@@ -3,9 +3,9 @@ version: 2.1
 jobs:
   cypress-tests:
     docker:
-      - image: node:14  # Choose the desired Node.js version
-    parallelism: 3
-
+      - image: cypress/base:latest # Use an appropriate Cypress image (adjust the version if needed)
+    working_directory: /home/circleci/project
+    parallelism: 2  # Adjust the number of parallel jobs as needed
     steps:
       - checkout
 
@@ -16,23 +16,18 @@ jobs:
 
       # Install dependencies if cache is not restored
       - run:
-          name: Install Dependencies
+          name: Clean Build Environment
           command: |
-              rm -rf ~/.npm
-              rm -rf node_modules
-              npm ci
-
+            rm -rf node_modules
+            rm -rf ~/.cache/Cypress
+            npm install
+          
       # Debugging logs
       - run:
           name: Enable Debugging Logs
           command: |
             export NODE_OPTIONS=--trace-warnings
             export DEBUG=cypress:*
-
-      # Install Cypress
-      - run:
-          name: Install Cypress
-          command: npx cypress install
 
       # Save Cypress binaries to cache for future use
       - save_cache:
@@ -51,6 +46,7 @@ jobs:
           command: ./run-cypress-tests.sh
 
 workflows:
+  version: 2
   build:
     jobs:
       - cypress-tests
