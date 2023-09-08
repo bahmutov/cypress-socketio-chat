@@ -1,5 +1,4 @@
 {
-  "type": "commonjs",
   "name": "cypress-socketio-chat",
   "version": "1.0.0",
   "description": "Example testing real-time Socket.io chat using Cypress.io",
