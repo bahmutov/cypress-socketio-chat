@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: cypress/base:latest # Use an appropriate Cypress image (adjust the version if needed)
     working_directory: /home/circleci/project
+    parallelism: 4  # Adjust the number of parallel jobs as needed
     steps:
       - checkout
 
@@ -39,7 +40,7 @@ jobs:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
 
-      # Run Cypress tests (adjust the command as needed)
+      # Run Cypress tests in parallel (adjust the command as needed)
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
@@ -49,4 +50,3 @@ workflows:
   build:
     jobs:
       - cypress-tests
-
