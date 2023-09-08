@@ -5,11 +5,13 @@ const args = arg({
   '--port': Number,
   '--record': Boolean,
   '--key': String,
+  '--parallel': Boolean,
 })
 
 const port = args['--port'] || 9090;
 const record = args['--record'];
 const key = args['--key'];
+const parallel = args['--parallel'];
 
 const cypress = require('cypress')
 const io = require('socket.io')(port)
@@ -60,7 +62,7 @@ if (args['--open']) {
 const cypressAction = args['--open'] ? cypress.open : cypress.run
 const firstCypress = cypressAction({
   configFile: 'cy-first-user.config.js',
-  record,key,
+  record,key,parallel,
 }).then((results) => {
     if(results.totalFailed != 0)
     {
@@ -76,7 +78,7 @@ const secondCypress = wait(5000).then(() => {
   console.log('starting the second Cypress')
   return cypressAction({
     configFile: 'cy-second-user.config.js',
-    record,key,
+    record,key,parallel,
   }).then((results) => {
     if(results.totalFailed != 0)
     {
