@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# Set your Cypress configuration files
-first_user_config="cy-first-user.config.js"
-second_user_config="cy-second-user.config.js"
-
-# Set your Cypress record key
-cypress_record_key=$CYPRESS_RECORD_KEY
+# Set your Cypress Record Key (replace with your actual key)
+CYPRESS_RECORD_KEY=$CYPRESS_RECORD_KEY
 
 # Function to display error message and exit with a non-zero code
 exit_with_error() {
@@ -13,49 +9,25 @@ exit_with_error() {
   exit 1
 }
 
-# Function to run Cypress tests with error handling
+# Run Cypress tests using chat.js
 run_cypress_tests() {
-  local config_file="$1"
-  local record="$2"
-  local key="$3"
+  local record="$1"
+  local key="$2"
 
-  if [ -z "$config_file" ]; then
-    exit_with_error "Cypress config file not provided."
-  fi
+  echo "Running Cypress tests using chat.js"
 
-  if [ -n "$record" ]; then
-    record_option="--record"
-  else
-    record_option=""
-  fi
-
-  if [ -n "$key" ]; then
-    key_option="--key=$key"
-  else
-    key_option=""
-  fi
-
-  echo "Running Cypress tests with config file: $config_file"
-  npx cypress run --config-file "$config_file" $record_option $key_option
+  # Execute chat.js with the provided record and key options
+  node chat.js --record="$record" --key="$key"
 
   if [ $? -ne 0 ]; then
-    exit_with_error "Cypress tests failed for config file: $config_file"
+    exit_with_error "Cypress tests failed."
   fi
 
-  echo "Cypress tests passed for config file: $config_file"
+  echo "Cypress tests passed."
 }
 
-# Run Cypress tests for the first user
-run_cypress_tests "$first_user_config" true "$cypress_record_key"
-
-# Delay before running tests for the second user
-sleep 5
-
-# Run Cypress tests for the second user
-run_cypress_tests "$second_user_config" true "$cypress_record_key"
-
-# All tests passed
-echo "All Cypress tests have passed."
+# Run Cypress tests with the provided Record Key
+run_cypress_tests true "$CYPRESS_RECORD_KEY"
 
 # Exit with success
 exit 0
