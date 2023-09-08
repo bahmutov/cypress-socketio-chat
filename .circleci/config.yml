@@ -5,7 +5,6 @@ jobs:
     docker:
       - image: cypress/base:latest # Use an appropriate Cypress image (adjust the version if needed)
     working_directory: /home/circleci/project
-    parallelism: 2  # Adjust the number of parallel jobs as needed
     steps:
       - checkout
 
