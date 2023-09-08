@@ -1,0 +1,23 @@
+name: Trigger CircleCI on Pull Request
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  trigger-circleci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger CircleCI Pipeline
+        run: |
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          CIRCLECI_API_URL="https://circleci.com/api/v2/project/gh/dharshqa/cypress-socketio-chat/pipeline"
+
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"branch\":\"$PR_BRANCH\"}" \
+            "$CIRCLECI_API_URL"
+
+        env:
+          CIRCLECI_API_TOKEN: ${{ secrets.CIRCLECI_API_TOKEN }}
