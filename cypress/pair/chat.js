@@ -17,6 +17,17 @@ const io = require('socket.io')(port);
 // Create an array to store results
 const results = [];
 
+// Function to print test results
+function printTestResults(result) {
+  console.log('Spec:', result.spec.name);
+  console.log('Tests:', result.totalTests);
+  console.log('Passing:', result.totalPassed);
+  console.log('Failing:', result.totalFailed);
+  console.log('Pending:', result.totalPending);
+  console.log('Skipped:', result.totalSkipped);
+  console.log('\n');
+}
+
 // little utility for delaying any async action
 const wait = (ms) => {
   return new Promise((resolve) => {
@@ -67,6 +78,7 @@ const firstCypress = cypressAction({
 .then((firstResults) => {
   console.log('First Cypress has finished');
   results.push(firstResults);
+  printTestResults(firstResults);
 })
 .catch((error) => {
   console.error('Error running the first Cypress:', error);
@@ -86,6 +98,7 @@ const secondCypress = wait(5000).then(() => {
 .then((secondResults) => {
   console.log('Second Cypress has finished');
   results.push(secondResults);
+  printTestResults(secondResults);
 })
 .catch((error) => {
   console.error('Error running the second Cypress:', error);
