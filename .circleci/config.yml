@@ -21,7 +21,7 @@ jobs:
             rm -rf node_modules
             rm -rf ~/.cache/Cypress
             npm install
-          
+        
       # Debugging logs
       - run:
           name: Enable Debugging Logs
@@ -50,4 +50,3 @@ workflows:
   build:
     jobs:
       - cypress-tests
-
