@@ -17,7 +17,7 @@ run_cypress_tests() {
   echo "Running Cypress tests using chat.js"
 
   # Execute chat.js with the provided record and key options
-  node /cypress/pair/chat.js --record="$record" --key="$key"
+  node ./cypress/pair/chat.js --record="$record" --key="$key"
 
   if [ $? -ne 0 ]; then
     exit_with_error "Cypress tests failed."
