@@ -27,20 +27,6 @@ jobs:
             - node_modules
           key: v1-deps-{{ checksum "package-lock.json" }}
 
-      - restore_cache:
-          keys:
-            - cypress-{{ arch }}-{{ checksum "cypress.json" }}
-            - cypress-{{ arch }}-
-
-      - run:
-          name: Install Cypress
-          command: npm install cypress
-
-      - save_cache:
-          paths:
-            - ~/.cache/Cypress
-          key: cypress-{{ arch }}-{{ checksum "cypress.json" }}
-
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
