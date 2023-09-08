@@ -18,14 +18,19 @@ const io = require('socket.io')(port);
 const results = [];
 
 // Function to print test results
+// Function to print test results
 function printTestResults(result) {
-  console.log('Spec:', result.spec.name);
-  console.log('Tests:', result.totalTests);
-  console.log('Passing:', result.totalPassed);
-  console.log('Failing:', result.totalFailed);
-  console.log('Pending:', result.totalPending);
-  console.log('Skipped:', result.totalSkipped);
-  console.log('\n');
+  if (result && result.spec && result.spec.name) {
+    console.log('Spec:', result.spec.name);
+    console.log('Tests:', result.totalTests);
+    console.log('Passing:', result.totalPassed);
+    console.log('Failing:', result.totalFailed);
+    console.log('Pending:', result.totalPending);
+    console.log('Skipped:', result.totalSkipped);
+    console.log('\n');
+  } else {
+    console.error('Invalid test results:', result);
+  }
 }
 
 // little utility for delaying any async action
