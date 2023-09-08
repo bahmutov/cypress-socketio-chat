@@ -5,7 +5,7 @@ first_user_config="cy-first-user.config.js"
 second_user_config="cy-second-user.config.js"
 
 # Set your Cypress record key
-cypress_record_key="YOUR_CYPRESS_RECORD_KEY"
+cypress_record_key=$CYPRESS_RECORD_KEY
 
 # Function to display error message and exit with a non-zero code
 exit_with_error() {
