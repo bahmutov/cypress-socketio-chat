@@ -1,67 +1,38 @@
 version: 2.1
 
 jobs:
-  cypress-tests:
+  build:
     docker:
       - image: cypress/base:latest
-    working_directory: /home/circleci/project
-    parallelism: 2
+
+    working_directory: /app
+
     steps:
       - checkout
 
-      # Restore cached Cypress binaries (if available)
-      - restore_cache:
-          keys:
-            - cypress-v1-{{ checksum "package-lock.json" }}
-
-      # Install dependencies if cache is not restored
+      # Replace these commands with your build and test steps
       - run:
-          name: Clean Build Environment
-          command: |
-            rm -rf node_modules
-            npm ci
-
-      # Debugging logs
-      - run:
-          name: Enable Debugging Logs
-          command: |
-            export NODE_OPTIONS=--trace-warnings
-            export DEBUG=cypress:*
-
-      # Save Cypress binaries to cache for future use
-      - save_cache:
-          key: cypress-v1-{{ checksum "package-lock.json" }}
-          paths:
-            - ~/.cache/Cypress
-
-      # Make the script executable (if needed)
-      - run:
-          name: Make Script Executable
-          command: chmod +x run-cypress-tests.sh
-
-      # Run Cypress tests in parallel and capture logs
-      - run:
-          name: Run Cypress Tests (First Instance)
-          command: ./run-cypress-tests.sh first-instance.log
+          name: Install Dependencies
+          command: npm install
 
       - run:
-          name: Run Cypress Tests (Second Instance)
-          command: ./run-cypress-tests.sh second-instance.log
-          background: true  # Run this step in the background
+          name: Run Cypress Tests
+          command: npm test
 
-      # Wait for both instances to complete
+  run-cypress:
+    docker:
+      - image: cypress/base:latest
+
+    steps:
+      - checkout
+
+      # Replace this with the path to your script
       - run:
-          name: Wait for Cypress Instances
-          command: wait
-
-      # Upload log files as artifacts
-      - persist_to_workspace:
-          root: .
-          paths:
-            - first-instance.log
-            - second-instance.log
+          name: Run Cypress Script
+          command: ./run-cypress-tests.sh
 
 workflows:
-  build:
+  build-and-test:
     jobs:
-      - cypress-tests
+      - build
+      - run-cypress
