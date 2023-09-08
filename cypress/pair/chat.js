@@ -14,6 +14,8 @@ const key = args['--key'];
 const cypress = require('cypress')
 const io = require('socket.io')(port)
 
+let exitCode = 0;
+
 // little utility for delaying any async action
 const wait = (ms) => {
   return new Promise((resolve) => {
@@ -60,8 +62,12 @@ const firstCypress = cypressAction({
   configFile: 'cy-first-user.config.js',
   record,key,
 }).then((results) => {
-  console.log('First Cypress has finished')
-  return results
+    if(results.totalFailed != 0)
+    {
+      exitCode = 1;
+      console.log(`Exit Code for First Cypress is: ${exitCode}`);
+      return results;
+    }   
 })
 
 // delay starting the second Cypress instance
@@ -71,11 +77,18 @@ const secondCypress = wait(5000).then(() => {
   return cypressAction({
     configFile: 'cy-second-user.config.js',
     record,key,
-  })
+  }).then((results) => {
+    if(results.totalFailed != 0)
+    {
+      exitCode = 1;
+      console.log(`Exit Code for First Cypress is: ${exitCode}`);
+      return results;
+    }   
+  });
 })
 
 Promise.all([firstCypress, secondCypress]).then(() => {
   // TODO: exit with the test code from both runners
-  console.log('all done, exiting')
-  process.exit(0)
+  console.log(`Exit Code: ${exitCode}`);
+  exitCode == 1 ? process.exit(1) : process.exit(0);
 })
