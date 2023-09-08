@@ -1,16 +1,77 @@
-#!/bin/bash
+version: 2.1
 
-# Run Cypress tests and record with parallel mode
-npm run chat:run -- --record --key $CYPRESS_RECORD_KEY
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:14
 
-# Capture the exit code of the Cypress tests
-E2E_RESULT=$?
+jobs:
+  build:
+    executor: node-executor
+    working_directory: ~/app
 
-# Check if Cypress tests failed (non-zero exit code)
-if [ "$E2E_RESULT" -ne 0 ]; then
-    echo -e "\nCypress tests failed with exit code: $E2E_RESULT\n"
-    exit 1  # Exit the script with a status code of 1
-else
-    echo -e "\nCypress tests passed\n"
-    exit 0  # Exit the script with a status code of 0 (success)
-fi
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "package-lock.json" }}
+            - v1-deps-
+
+      - run:
+          name: Install Dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-deps-{{ checksum "package-lock.json" }}
+
+      - restore_cache:
+          keys:
+            - cypress-{{ arch }}-{{ checksum "cypress.json" }}
+            - cypress-{{ arch }}-
+
+      - run:
+          name: Install Cypress
+          command: npm install cypress
+
+      - save_cache:
+          paths:
+            - ~/.cache/Cypress
+          key: cypress-{{ arch }}-{{ checksum "cypress.json" }}
+
+      - run:
+          name: Run Cypress Tests
+          command: ./run_tests.sh
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - cypress/videos
+            - cypress/screenshots
+
+  deploy:
+    docker:
+      - image: cypress/base:14
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Transfer Test Artifacts
+          command: cp -a /tmp/workspace/cypress/videos /tmp/workspace/cypress/screenshots /tmp/workspace/artifacts
+
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - artifacts
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
