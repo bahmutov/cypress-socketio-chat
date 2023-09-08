@@ -72,7 +72,7 @@ const firstCypress = cypressAction({
 
 // delay starting the second Cypress instance
 // to avoid XVFB race condition
-const secondCypress = wait(5000).then(() => {
+const secondCypress = wait(2000).then(() => {
   console.log('starting the second Cypress')
   return cypressAction({
     configFile: 'cy-second-user.config.js',

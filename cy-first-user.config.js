@@ -14,7 +14,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config)
     },
-    baseUrl: 'http://www.yahoo.com',
+    baseUrl: 'https://www.cypress.io/',
     specPattern: 'cypress/pair/**/first-user.js',
   },
 })
