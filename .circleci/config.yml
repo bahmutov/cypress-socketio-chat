@@ -3,12 +3,20 @@ version: 2.1
 jobs:
   cypress-tests:
     docker:
-      - image: circleci/node:12 # Change to Node.js 12 image
+      - image: circleci/node:14
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - npm-v1-{{ checksum "package.json" }}
       - run:
           name: Install Dependencies
           command: npm install
+      - save_cache:
+          key: npm-v1-{{ checksum "package.json" }}
+          paths:
+            - ~/.npm
+
       - run:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
