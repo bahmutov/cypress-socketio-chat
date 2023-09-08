@@ -19,8 +19,16 @@ jobs:
           name: Clean Build Environment
           command: |
             rm -rf node_modules
-            npm ci # Use "npm ci" for faster and reliable dependency installation
-            
+            npm ci
+
+      # Set consistent environment parameters
+      - run:
+          name: Set Environment Parameters
+          command: |
+            export OS_NAME="mac"  # Set the desired operating system
+            export BROWSER_NAME="electron"  # Set the desired browser
+            export BROWSER_VERSION="latest"  # Set the desired browser version
+
       # Debugging logs
       - run:
           name: Enable Debugging Logs
