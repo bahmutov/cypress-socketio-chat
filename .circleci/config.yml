@@ -49,4 +49,10 @@ workflows:
   version: 2
   build:
     jobs:
-      - cypress-tests
+      - cypress-tests:
+          filters:
+            branches:
+              only:
+                - /^pull\/.*$/ # Only run on PRs
+          context:
+            - /main$/ # Only run if the PR is targeting the main branch
