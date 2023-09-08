@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
       - run:
