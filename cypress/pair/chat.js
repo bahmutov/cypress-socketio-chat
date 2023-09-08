@@ -1,6 +1,5 @@
 const arg = require('arg');
-const cypress = require('cypress');
-const io = require('socket.io')(port);
+
 
 const args = arg({
   '--open': Boolean,
@@ -12,6 +11,9 @@ const args = arg({
 const port = args['--port'] || 9090;
 const record = args['--record'];
 const key = args['--key'];
+
+const cypress = require('cypress');
+const io = require('socket.io')(port);
 
 // Utility function for delaying async actions
 const wait = (ms) => {
