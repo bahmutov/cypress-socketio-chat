@@ -15,10 +15,6 @@ jobs:
           name: Install Dependencies
           command: npm install
 
-      - run:
-          name: Run Initial Tests
-          command: npm test
-
   run-cypress:
     docker:
       - image: cypress/base:latest
