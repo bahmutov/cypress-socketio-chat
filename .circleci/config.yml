@@ -3,15 +3,10 @@ version: 2.1
 jobs:
   cypress-tests:
     docker:
-      - image: circleci/node:14 # Specify the desired Node.js version
+      - image: cypress/base:14 # Use an appropriate Cypress image (adjust the version if needed)
     working_directory: /home/circleci/project
     steps:
       - checkout
-      
-      # Install the libnss3 library
-      - run:
-          name: Install libnss3
-          command: sudo apt-get install libnss3 -y
 
       # Restore cached Cypress binaries (if available)
       - restore_cache:
@@ -29,11 +24,12 @@ jobs:
           paths:
             - ~/.cache/Cypress
 
+      # Make the script executable (if needed)
       - run:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
 
-      # Run Cypress tests
+      # Run Cypress tests (adjust the command as needed)
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
