@@ -3,23 +3,32 @@ version: 2.1
 jobs:
   cypress-tests:
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:14 # Specify the desired Node.js version
+    working_directory: /home/circleci/project
     steps:
       - checkout
+      
+      # Restore cached Cypress binaries (if available)
       - restore_cache:
           keys:
-            - npm-v1-{{ checksum "package.json" }}
+            - cypress-v1-{{ checksum "package-lock.json" }}
+
+      # Install dependencies if cache is not restored
       - run:
           name: Install Dependencies
           command: npm install
+
+      # Save Cypress binaries to cache for future use
       - save_cache:
-          key: npm-v1-{{ checksum "package.json" }}
+          key: cypress-v1-{{ checksum "package-lock.json" }}
           paths:
-            - ~/.npm
+            - ~/.cache/Cypress
 
       - run:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
+
+      # Run Cypress tests
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
