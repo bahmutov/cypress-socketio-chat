@@ -4,13 +4,10 @@
 npm run chat:run -- --record --key $CYPRESS_RECORD_KEY
 
 # Capture the exit code of the Cypress tests
-exit_code=$?
+$E2E_RESULT=$?
 
 # Check if Cypress tests failed (non-zero exit code)
-if [ $exit_code -ne 0 ]; then
-    echo "Cypress tests failed with exit code $exit_code"
-    exit $exit_code
+if [ ["$E2E_RESULT" != "0"]]; then
+    echo -e "\n$E2E_RESULT\n"
+    exit 1
 fi
-
-# If the tests passed, exit with a success code (0)
-exit 0

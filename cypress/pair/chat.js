@@ -51,14 +51,6 @@ io.on('connection', (socket) => {
   })
 })
 
-// TODO: implement reset before each test
-
-if (args['--open']) {
-  console.log('opening the first Cypress')
-} else {
-  console.log('starting the first Cypress')
-}
-
 const cypressAction = args['--open'] ? cypress.open : cypress.run
 const firstCypress = cypressAction({
   configFile: 'cy-first-user.config.js',
@@ -70,7 +62,7 @@ const firstCypress = cypressAction({
       console.log(`Exit Code for First Cypress is: ${exitCode}`);
       return results;
     }   
-})
+});
 
 // delay starting the second Cypress instance
 // to avoid XVFB race condition
@@ -83,14 +75,14 @@ const secondCypress = wait(5000).then(() => {
     if(results.totalFailed != 0)
     {
       exitCode = 1;
-      console.log(`Exit Code for First Cypress is: ${exitCode}`);
+      console.log(`Exit Code for Second Cypress is: ${exitCode}`);
       return results;
     }   
   });
-})
+});
 
 Promise.all([firstCypress, secondCypress]).then(() => {
   // TODO: exit with the test code from both runners
   console.log(`Exit Code: ${exitCode}`);
   exitCode == 1 ? process.exit(1) : process.exit(0);
-})
+});
