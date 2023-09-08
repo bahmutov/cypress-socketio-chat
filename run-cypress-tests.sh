@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run Cypress tests and record with parallel mode
-npm run chat:run --record --key $CYPRESS_RECORD_KEY --parallel
+npm run chat:run -- --record --key $CYPRESS_RECORD_KEY --parallel
 
 # Capture the exit code of the Cypress tests
 exit_code=$?
