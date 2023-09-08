@@ -14,19 +14,19 @@ jobs:
             - cypress-v1-{{ checksum "package-lock.json" }}
 
       # Install dependencies if cache is not restored
-     - run:
-        name: Clean Build Environment
-        command: |
-          rm -rf node_modules
-          rm -rf ~/.cache/Cypress
-          npm install
+       - run:
+          name: Clean Build Environment
+          command: |
+            rm -rf node_modules
+            rm -rf ~/.cache/Cypress
+            npm install
           
-      #Debugging logs
-    - run:
-       name: Enable Debugging Logs
-       command: |
-        export NODE_OPTIONS=--trace-warnings
-         export DEBUG=cypress:*
+      # Debugging logs
+      - run:
+          name: Enable Debugging Logs
+          command: |
+            export NODE_OPTIONS=--trace-warnings
+            export DEBUG=cypress:*
 
       # Save Cypress binaries to cache for future use
       - save_cache:
