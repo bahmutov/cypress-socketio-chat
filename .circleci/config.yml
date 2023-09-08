@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   cypress-tests:
     docker:
-      - image: cypress/base:14 # Use an appropriate Cypress image (adjust the version if needed)
+      - image: cypress/base:latest # Use an appropriate Cypress image (adjust the version if needed)
     working_directory: /home/circleci/project
     steps:
       - checkout
