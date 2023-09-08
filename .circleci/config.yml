@@ -40,7 +40,7 @@ jobs:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
 
-      # Run Cypress tests in parallel (adjust the command as needed)
+      # Run Cypress tests using the improved shell script
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
