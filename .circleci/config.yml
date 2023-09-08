@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cypress/base:latest
+      - image: cimg/node:20.6-browsers
 
     working_directory: /app
 
@@ -16,7 +16,7 @@ jobs:
           command: npm install
 
       - run:
-          name: Run Cypress Tests
+          name: Run Initial Tests
           command: npm test
 
   run-cypress:
@@ -32,7 +32,14 @@ jobs:
           command: ./run-cypress-tests.sh
 
 workflows:
+  version: 2
   build-and-test:
     jobs:
-      - build
-      - run-cypress
+      - build:
+          filters:
+            branches:
+              only:
+                - main  # Adjust this to the branch where you want to run the pipeline
+      - run-cypress:
+          requires:
+            - build
