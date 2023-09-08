@@ -4,12 +4,11 @@ jobs:
   cypress-tests:
     docker:
       - image: cypress/base:14
-    parallelism: 4  # Adjust the number as needed
     steps:
       - checkout
       - run:
-          name: Install Dependencies
-          command: npm install
+          name: Make Script Executable
+          command: chmod +x run-cypress-tests.sh
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
