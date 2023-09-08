@@ -39,10 +39,27 @@ jobs:
           name: Make Script Executable
           command: chmod +x run-cypress-tests.sh
 
-      # Run Cypress tests in parallel (adjust the command as needed)
+      # Run Cypress tests in parallel and capture logs
       - run:
-          name: Run Cypress Tests
-          command: ./run-cypress-tests.sh
+          name: Run Cypress Tests (First Instance)
+          command: ./run-cypress-tests.sh first-instance.log
+
+      - run:
+          name: Run Cypress Tests (Second Instance)
+          command: ./run-cypress-tests.sh second-instance.log
+          background: true  # Run this step in the background
+
+      # Wait for both instances to complete
+      - run:
+          name: Wait for Cypress Instances
+          command: wait
+
+      # Upload log files as artifacts
+      - persist_to_workspace:
+          root: .
+          paths:
+            - first-instance.log
+            - second-instance.log
 
 workflows:
   build:
