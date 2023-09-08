@@ -3,9 +3,9 @@ version: 2.1
 jobs:
   cypress-tests:
     docker:
-      - image: cypress/base:latest # Use an appropriate Cypress image (adjust the version if needed)
+      - image: cypress/base:latest
     working_directory: /home/circleci/project
-    parallelism: 5  # Adjust the number of parallel jobs as needed
+    parallelism: 5
     steps:
       - checkout
 
@@ -19,9 +19,8 @@ jobs:
           name: Clean Build Environment
           command: |
             rm -rf node_modules
-            rm -rf ~/.cache/Cypress
-            npm install
-        
+            npm ci # Use "npm ci" for faster and reliable dependency installation
+            
       # Debugging logs
       - run:
           name: Enable Debugging Logs
@@ -46,6 +45,7 @@ jobs:
           command: ./run-cypress-tests.sh
 
 workflows:
+  version: 2
   build:
     jobs:
       - cypress-tests
