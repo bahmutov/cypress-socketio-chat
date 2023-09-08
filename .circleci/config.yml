@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:20.6-browsers
+      - image: cypress/base:latest
 
     working_directory: /home/circleci/myapp
 
