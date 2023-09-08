@@ -1,14 +1,10 @@
 version: 2.1
 
-executors:
-  my-executor:
+jobs:
+  cypress-tests:
     docker:
       - image: cypress/base:14
     parallelism: 4  # Adjust the number as needed
-
-jobs:
-  cypress-tests:
-    executor: my-executor
     steps:
       - checkout
       - run:
