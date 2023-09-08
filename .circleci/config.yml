@@ -14,10 +14,17 @@ jobs:
       - run:
           name: Clean Build
           command: |
-            rm -rf <directory or files>  # Clean generated files or directories
-            npm cache clean --force      # Clean npm cache
-            npm install                 # Reinstall dependencies
-            npm run build               # Rebuild if needed
+            # Remove generated files or directories
+            rm -rf <directory or files> || true  # Ignore errors
+
+            # Clean npm cache
+            npm cache clean --force || true  # Ignore errors
+
+            # Reinstall dependencies
+            npm install || { echo "npm install failed"; exit 1; }
+
+            # Rebuild if needed
+            npm run build || { echo "npm run build failed"; exit 1; }
 
   run-cypress:
     docker:
