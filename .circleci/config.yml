@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: cimg/node:20.6-browsers
 
-    working_directory: /app
+    working_directory: /home/circleci/myapp
 
     steps:
       - checkout
