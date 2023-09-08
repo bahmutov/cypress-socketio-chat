@@ -1,52 +1,77 @@
 version: 2.1
 
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:14
+
 jobs:
   build:
-    docker:
-      - image: cypress/base:latest
-
-    working_directory: /home/circleci/myapp
+    executor: node-executor
+    working_directory: ~/app
 
     steps:
       - checkout
 
-      # Step 1: Clean Build
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "package-lock.json" }}
+            - v1-deps-
+
       - run:
-          name: Clean Build
-          command: |
-            # Remove generated files or directories
-            rm -rf <directory or files> || true  # Ignore errors
+          name: Install Dependencies
+          command: npm install
 
-            # Clean npm cache
-            npm cache clean --force || true  # Ignore errors
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-deps-{{ checksum "package-lock.json" }}
 
-            # Reinstall dependencies
-            npm install || { echo "npm install failed"; exit 1; }
+      - restore_cache:
+          keys:
+            - cypress-{{ arch }}-{{ checksum "cypress.json" }}
+            - cypress-{{ arch }}-
 
-            # Rebuild if needed
-            npm run build || { echo "npm run build failed"; exit 1; }
+      - run:
+          name: Install Cypress
+          command: npm install cypress
 
-  run-cypress:
-    docker:
-      - image: cypress/base:latest
+      - save_cache:
+          paths:
+            - ~/.cache/Cypress
+          key: cypress-{{ arch }}-{{ checksum "cypress.json" }}
 
-    steps:
-      - checkout
-
-      # Step 2: Run Cypress Tests
       - run:
           name: Run Cypress Tests
           command: ./run-cypress-tests.sh
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - cypress/videos
+            - cypress/screenshots
+
+  deploy:
+    docker:
+      - image: cypress/base:14
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - run:
+          name: Transfer Test Artifacts
+          command: cp -a /tmp/workspace/cypress/videos /tmp/workspace/cypress/screenshots /tmp/workspace/artifacts
+
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - artifacts
+
 workflows:
   version: 2
-  build-and-test:
+  build_and_test:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - main  # Adjust this to the branch where you want to run the pipeline
-      - run-cypress:
+      - build
+      - deploy:
           requires:
             - build
