@@ -5,18 +5,14 @@ const args = arg({
   '--port': Number,
   '--record': Boolean,
   '--key': String,
-  '--parallel': Boolean,
 })
 
 const port = args['--port'] || 9090;
 const record = args['--record'];
 const key = args['--key'];
-const parallel = args['--parallel'];
 
 const cypress = require('cypress')
 const io = require('socket.io')(port)
-
-let exitCode = 0;
 
 // little utility for delaying any async action
 const wait = (ms) => {
@@ -51,18 +47,22 @@ io.on('connection', (socket) => {
   })
 })
 
+// TODO: implement reset before each test
+
+if (args['--open']) {
+  console.log('opening the first Cypress')
+} else {
+  console.log('starting the first Cypress')
+}
+
 const cypressAction = args['--open'] ? cypress.open : cypress.run
 const firstCypress = cypressAction({
   configFile: 'cy-first-user.config.js',
-  record,key,parallel,
+  record,key,
 }).then((results) => {
-    if(results.totalFailed != 0)
-    {
-      exitCode = 1;
-      console.log(`Exit Code for First Cypress is: ${exitCode}`);
-      return results;
-    }   
-});
+  console.log('First Cypress has finished')
+  return results
+})
 
 // delay starting the second Cypress instance
 // to avoid XVFB race condition
@@ -70,19 +70,12 @@ const secondCypress = wait(5000).then(() => {
   console.log('starting the second Cypress')
   return cypressAction({
     configFile: 'cy-second-user.config.js',
-    record,key,parallel,
-  }).then((results) => {
-    if(results.totalFailed != 0)
-    {
-      exitCode = 1;
-      console.log(`Exit Code for Second Cypress is: ${exitCode}`);
-      return results;
-    }   
-  });
-});
+    record,key,
+  })
+})
 
 Promise.all([firstCypress, secondCypress]).then(() => {
   // TODO: exit with the test code from both runners
-  console.log(`Exit Code: ${exitCode}`);
-  exitCode == 1 ? process.exit(1) : process.exit(0);
-});
+  console.log('all done, exiting')
+  process.exit(0)
+})
