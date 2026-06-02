@@ -11,7 +11,7 @@ jobs:
       # and run E2E tests using Cypress GitHub action
       # https://github.com/cypress-io/github-action
       - name: Run tests 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v7.4.0
         with:
           start: npm start
           wait-on: 'http://localhost:8080'
@@ -19,7 +19,7 @@ jobs:
       # run two Cypress instances at the same time
       # so they truly chat with each other
       - name: Run 2 Cypresses 🧪
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v7.4.0
         with:
           # we already have installed everything
           install: false
